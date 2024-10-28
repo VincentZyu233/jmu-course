@@ -1,4 +1,8 @@
+建议直接浏览器查看[本文件gitee链接](https://gitee.com/vincent-zyu/jmu-course/blob/master/jmu-basic/homework/hw1.md) 获得更好观感，  
+或者使用能够查看markdown文件的工具查看本文件（如vscode）
+
 # 课堂派作业1
+
 ### 1.(1)证明：逻辑计算中只需要两个运算符，（非、与），或者（非、或）。
 
 如果只有 NOT 和 OR，
