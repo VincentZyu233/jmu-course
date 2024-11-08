@@ -1,3 +1,5 @@
+##
+
 ```bash
 python -m venv venv_util
 venv_util\Scripts\activate
@@ -14,4 +16,17 @@ pip install -r requirements.txt
 (venv_util) vincentzyu@Master:~/Documents/jmu-course/utils$ python --version
 Python 3.10.12
 (venv_util) vincentzyu@Master:~/Documents/jmu-course/utils$ 
+```
+
+
+git
+```bash
+git fetch
+git status
+
+git log origin/main..HEAD  # 查看未推送的提交
+git log HEAD..origin/main  # 查看未拉取的提交
+
+git diff origin/main
+
 ```

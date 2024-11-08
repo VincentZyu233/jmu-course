@@ -10,7 +10,7 @@ void print_bits( T a, size_t len ){
     cout << "bits of " << a << ": \n";
     long b = (long) a;
     for ( int i=(int)(len)-1; i>=0; i-- ){
-        cout << ( (a>>i) & 1 );
+        cout << ( (b>>i) & 1 );
         if (i%4==0) cout << ' ';
     }
     cout << "\n\n";
