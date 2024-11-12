@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenPowerShellHere]
+@="Open PowerShell Here"
+"Icon"="D:/AAAstuffsAAA/AAAqwqAAA/AAArepo-from-githubAAA/jmu-course/utils/reg_right_click_open_terminal_here/ps_logo.ico" 
+
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenPowerShellHere\command]
+@="powershell.exe -noexit -command Set-Location -literalPath \"%V\""
