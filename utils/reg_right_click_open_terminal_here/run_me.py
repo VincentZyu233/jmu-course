@@ -5,7 +5,7 @@ import subprocess
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 图标的相对路径
-icon_relative_path = "cmd_logo.png"
+icon_relative_path = "ps_logo.png"
 
 # 拼接成绝对路径
 icon_absolute_path = os.path.join(current_dir, icon_relative_path)
@@ -14,7 +14,7 @@ icon_absolute_path = os.path.join(current_dir, icon_relative_path)
 reg_content = f'''Windows Registry Editor Version 5.00
 
 [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\OpenPowerShellHere]
-@="Open PowerShell Here"
+@="Open PowerShell Here qwq"
 "Icon"="{icon_absolute_path}"
 
 [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\OpenPowerShellHere\\command]

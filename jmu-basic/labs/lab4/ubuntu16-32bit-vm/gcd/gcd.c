@@ -1,6 +1,7 @@
 /*
 gcc -g -o gcd.o gcd.c
 ./gcd.o
+objdump -d gcd.o >> gcd.o.txt
 
 */
 

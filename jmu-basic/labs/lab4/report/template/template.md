@@ -88,6 +88,31 @@ wang@ubuntu:/mnt/hgfs/jmu-course/jmu-basic/labs/lab4/gcd$
 
 ```
 
+##### 然后把.o文件用objdump工具进行反汇编 输出到txt
+```bash
+
+wang@ubuntu:/mnt/hgfs/jmu-course/jmu-basic/labs/lab4/ubuntu16-32bit-vm/gcd$ ls
+gcd.c  gcd.o
+wang@ubuntu:/mnt/hgfs/jmu-course/jmu-basic/labs/lab4/ubuntu16-32bit-vm/gcd$ objdump -d gcd.o >> gcd.o.txt
+wang@ubuntu:/mnt/hgfs/jmu-course/jmu-basic/labs/lab4/ubuntu16-32bit-vm/gcd$ 
+
+```
+
+###### 阅读一下反汇编以后的代码
+
+- main函数的入口，地址是080484
+```asm
+080484eb <main>:
+80484eb: 8d 4c 24 04 lea 0x4(%esp),%ecx
+80484ef: 83 e4 f0 and $0xfffffff0,%esp
+```
+
+`080484eb`是函数的起始地址
+`<main>`是函数的标识符
+
+
+
+
 2．测试数据设计
 
 3．测试结果分析。
