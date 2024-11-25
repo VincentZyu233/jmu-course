@@ -100,17 +100,28 @@ wang@ubuntu:/mnt/hgfs/jmu-course/jmu-basic/labs/lab4/ubuntu16-32bit-vm/gcd$
 
 ###### 阅读一下反汇编以后的代码
 
-- main函数的入口，地址是080484
+- main函数的入口，main函数的前置部分
 ```asm
 080484eb <main>:
-80484eb: 8d 4c 24 04 lea 0x4(%esp),%ecx
-80484ef: 83 e4 f0 and $0xfffffff0,%esp
+ 80484eb:	8d 4c 24 04          	lea    0x4(%esp),%ecx
+ 80484ef:	83 e4 f0             	and    $0xfffffff0,%esp
+ 80484f2:	ff 71 fc             	pushl  -0x4(%ecx)
+ 80484f5:	55                   	push   %ebp
+ 80484f6:	89 e5                	mov    %esp,%ebp
+ 80484f8:	51                   	push   %ecx
+ 80484f9:	83 ec 14             	sub    $0x14,%esp
+ 80484fc:	65 a1 14 00 00 00    	mov    %gs:0x14,%eax
+ 8048502:	89 45 f4             	mov    %eax,-0xc(%ebp)
+ 8048505:	31 c0                	xor    %eax,%eax
 ```
 
 `080484eb`是函数的起始地址
 `<main>`是函数的标识符
-
-
+`lea 0x4(%esp),%ecx` 做的事情是 ，从esp寄存器取出数，再+4，然后存到ecx中
+`and $0xfffffff0,%esp` 做的事情是 把esp寄存器的低四位全部清零，对齐到16字节的边界，
+`pushl  -0x4(%ecx)` 做的事情是 从ecx取数 然后-4， 作为内存地址，然后从这个内存地址取数，压入栈中，然后栈指针减去4字节
+`push   %ebp`做的事情是 保存epb寄存器的值
+`mov    %esp,%ebp`做的事情是 设置当前的栈帧
 
 
 2．测试数据设计

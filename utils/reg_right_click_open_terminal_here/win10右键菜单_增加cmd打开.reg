@@ -1,8 +1,8 @@
 Windows Registry Editor Version 5.00
 
 [HKEY_CLASSES_ROOT\Directory\Background\shell\OpenCmdHere]
-@="Open CMD here"
-"Icon"="D:\AAAstuffsAAA\AAAqwqAAA\AAArepo-from-githubAAA\jmu-course\utils\reg_right_click_open_terminal_here\cmd_logo.ico" 
+@="Open CMD here qwq" 
+"Icon"="D:\AAAstuffsAAA\AAAqwqAAA\AAArepo-from-githubAAA\gitee\jmu-course\utils\reg_right_click_open_terminal_here\cmd_logo.ico" 
 
 
 [HKEY_CLASSES_ROOT\Directory\Background\shell\OpenCmdHere\command]
