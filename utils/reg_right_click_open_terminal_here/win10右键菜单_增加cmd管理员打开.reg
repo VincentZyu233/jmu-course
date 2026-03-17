@@ -1,0 +1,10 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenCmdAdminHere]
+@="Open CMD here (Admin) qwq" 
+"Icon"="D:\AAAstuffsAAA\AAAqwqAAA\AAArepo-from-githubAAA\gitee\jmu-course\utils\reg_right_click_open_terminal_here\cmd_logo.ico" 
+"HasLUAShield"=""
+
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenCmdAdminHere\command]
+@="powershell.exe -WindowStyle Hidden -Command \"Start-Process cmd.exe -ArgumentList '/k cd /d \\\"%V\\\"' -Verb RunAs\""
