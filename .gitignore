@@ -8,3 +8,15 @@
 *.pyo
 __pycache__/
 
+# Python虚拟环境
+.venv/
+venv/
+env/
+
+# 机器学习实验临时文件
+jmu-machine-learning/lab1/.venv/
+jmu-machine-learning/lab1/minecraft/skin/dataset/
+jmu-machine-learning/lab1/wine/images/
+jmu-machine-learning/lab2/.venv/
+jmu-machine-learning/lab2/page-in-ppt/
+jmu-machine-learning/lab2/quick-example/output/
