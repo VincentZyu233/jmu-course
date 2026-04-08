@@ -19,4 +19,5 @@ jmu-machine-learning/lab1/minecraft/skin/dataset/
 jmu-machine-learning/lab1/wine/images/
 jmu-machine-learning/lab2/.venv/
 jmu-machine-learning/lab2/page-in-ppt/
-jmu-machine-learning/lab2/quick-example/output/
+jmu-machine-learning/lab2/quick-example/output/*.npz
+jmu-machine-learning/lab2/quick-example/output/*.pkl
