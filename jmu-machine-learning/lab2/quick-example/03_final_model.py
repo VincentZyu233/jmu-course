@@ -54,12 +54,13 @@ print(f"  测试集准确率: {test_acc:.4f}")
 
 # 3. 最优决策树可视化
 print("\n[3/5] 生成最优决策树可视化...")
-fig, ax = plt.subplots(figsize=(25, 15))
+fig, ax = plt.subplots(figsize=(35, 22))
 plot_tree(final_model, feature_names=feature_names, class_names=target_names,
-          filled=True, rounded=True, fontsize=9, ax=ax)
-plt.title('Final Optimized Decision Tree', fontsize=18, fontweight='bold', pad=20)
+          filled=True, rounded=True, fontsize=12, ax=ax,
+          proportion=True, precision=2, impurity=True)
+plt.title('Final Optimized Decision Tree', fontsize=22, fontweight='bold', pad=30)
 plt.tight_layout()
-plt.savefig('output/figures/tree_final.png', dpi=300, bbox_inches='tight')
+plt.savefig('output/figures/tree_final.png', dpi=200, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 保存: output/figures/tree_final.png")
 
