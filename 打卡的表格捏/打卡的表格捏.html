@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>科研助理签到表</title>
+  <style>
+    /* A4 纸张打印设置 */
+    @page {
+      size: A4;
+      margin: 2cm;
+    }
+    body {
+      font-family: "SimSun", "STSong", "Songti SC", serif;
+      margin: 0;
+      padding: 0;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px;
+    }
+    .title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid black;
+    }
+    th, td {
+      border: 1px solid black;
+      text-align: center;
+      height: 70px; /* 稍微增加了一点高度，手写签名更舒服 */
+      font-size: 16px;
+    }
+    .header-row {
+      height: 45px;
+      background-color: #fcfcfc;
+    }
+    .time-label {
+      width: 15%;
+      font-weight: bold;
+    }
+    .sub-time-label {
+      width: 15%;
+    }
+    .sign-area {
+      width: 70%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">科研助理签到表</div>
+    <div class="subtitle">日期：2026 年 4 月 20 日 —— 2026 年 4 月 24 日</div>
+
+    <table>
+      <thead>
+        <tr class="header-row">
+          <th colspan="2">时间</th>
+          <th>签到</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="time-label" rowspan="2">周一</td>
+          <td class="sub-time-label">上午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="sub-time-label">下午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="time-label" rowspan="2">周二</td>
+          <td class="sub-time-label">上午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="sub-time-label">下午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="time-label" rowspan="2">周三</td>
+          <td class="sub-time-label">上午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="sub-time-label">下午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="time-label" rowspan="2">周四</td>
+          <td class="sub-time-label">上午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="sub-time-label">下午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="time-label" rowspan="2">周五</td>
+          <td class="sub-time-label">上午</td>
+          <td class="sign-area"></td>
+        </tr>
+        <tr>
+          <td class="sub-time-label">下午</td>
+          <td class="sign-area"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
