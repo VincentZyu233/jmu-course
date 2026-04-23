@@ -128,12 +128,19 @@ GRE >= 320?
 
 ### 4.3 可视化分析
 
-**对比图：** `results/10_model_comparison_plot.png`
-- 3×3 九宫格，每行一个模型
-- 每行包含：预测图、残差图、误差分布
+#### 各模型结果图
 
-**指标对比图：** `results/10_metrics_comparison.png`
-- MSE、R²、训练时间的柱状对比
+![线性回归](07_lr_plot.png)
+
+![SVM](08_svm_plot.png)
+
+![决策树](09_dt_plot.png)
+
+![三模型对比](10_model_comparison_plot.png)
+
+#### 指标对比图
+
+![指标对比](10_metrics_comparison.png)
 
 ---
 
