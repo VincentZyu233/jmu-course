@@ -12,6 +12,9 @@ __pycache__/
 .venv/
 venv/
 env/
+**/.venv/
+**/venv/
+**/env/
 
 # 机器学习实验临时文件
 jmu-machine-learning/lab1/.venv/
@@ -21,3 +24,7 @@ jmu-machine-learning/lab2/.venv/
 jmu-machine-learning/lab2/page-in-ppt/
 jmu-machine-learning/lab2/quick-example/output/*.npz
 jmu-machine-learning/lab2/quick-example/output/*.pkl
+
+# tmp dir
+**/tmp/
+**/temp/
