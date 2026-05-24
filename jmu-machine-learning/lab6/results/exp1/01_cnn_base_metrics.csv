@@ -1,0 +1,2 @@
+name,epochs,batch_size,lr,kernel_size,train_acc,test_acc,train_loss,test_loss,seconds
+01_cnn_base,3,128,0.001,3,0.9687,0.9716,0.10275214177370072,0.08415629547983408,5.744084399993881

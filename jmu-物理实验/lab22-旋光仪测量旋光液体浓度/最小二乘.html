@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最小二乘法线性回归</title>
+<style>
+:root {
+  --bg: #f0f4f8;
+  --card-bg: #fff;
+  --card-shadow: rgba(37,99,235,.12);
+  --text-primary: #1e3a5f;
+  --text-body: #2d3748;
+  --text-muted: #8a9bb5;
+  --text-dim: #a0b4cc;
+  --text-placeholder: #b0bcca;
+  --label: #6b7f99;
+  --blue: #2563eb;
+  --blue-hover: #1d4ed8;
+  --blue-value: #2563eb;
+  --border: #d1d9e8;
+  --btn-bg: #e8edf5;
+  --btn-text: #4a5568;
+  --btn-hover: #d1d9e8;
+  --thead-bg: #f7f9fc;
+  --th-text: #4a5568;
+  --row-border: #eef2f7;
+  --row-hover: #f7f9fc;
+  --table-border: #e8edf5;
+  --result-bg: #f7f9fc;
+}
+[data-theme="light"] {
+  --bg: #f0f4f8;
+  --card-bg: #fff;
+  --card-shadow: rgba(37,99,235,.12);
+  --text-primary: #1e3a5f;
+  --text-body: #2d3748;
+  --text-muted: #8a9bb5;
+  --text-dim: #a0b4cc;
+  --text-placeholder: #b0bcca;
+  --label: #6b7f99;
+  --blue: #2563eb;
+  --blue-hover: #1d4ed8;
+  --blue-value: #2563eb;
+  --border: #d1d9e8;
+  --btn-bg: #e8edf5;
+  --btn-text: #4a5568;
+  --btn-hover: #d1d9e8;
+  --thead-bg: #f7f9fc;
+  --th-text: #4a5568;
+  --row-border: #eef2f7;
+  --row-hover: #f7f9fc;
+  --table-border: #e8edf5;
+  --result-bg: #f7f9fc;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --card-shadow: rgba(0,0,0,.3);
+    --text-primary: #e2e8f0;
+    --text-body: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --text-placeholder: #64748b;
+    --label: #94a3b8;
+    --blue: #60a5fa;
+    --blue-hover: #93bbfd;
+    --blue-value: #60a5fa;
+    --border: #334155;
+    --btn-bg: #334155;
+    --btn-text: #cbd5e1;
+    --btn-hover: #475569;
+    --thead-bg: #334155;
+    --th-text: #cbd5e1;
+    --row-border: #334155;
+    --row-hover: #1e293b;
+    --table-border: #334155;
+    --result-bg: #0f172a;
+  }
+}
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --card-shadow: rgba(0,0,0,.3);
+  --text-primary: #e2e8f0;
+  --text-body: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --text-placeholder: #64748b;
+  --label: #94a3b8;
+  --blue: #60a5fa;
+  --blue-hover: #93bbfd;
+  --blue-value: #60a5fa;
+  --border: #334155;
+  --btn-bg: #334155;
+  --btn-text: #cbd5e1;
+  --btn-hover: #475569;
+  --thead-bg: #334155;
+  --th-text: #cbd5e1;
+  --row-border: #334155;
+  --row-hover: #1e293b;
+  --table-border: #334155;
+  --result-bg: #0f172a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "Microsoft YaHei", "PingFang SC", sans-serif;
+  background: var(--bg); min-height: 100vh;
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: 30px 20px;
+}
+.card {
+  background: var(--card-bg); border-radius: 12px;
+  box-shadow: 0 2px 16px var(--card-shadow);
+  padding: 28px 32px; max-width: 640px; width: 100%;
+}
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; gap: 12px;
+}
+h1 {
+  font-size: 20px; font-weight: 700; color: var(--text-primary);
+  letter-spacing: 1px; white-space: nowrap;
+}
+.theme-btn {
+  padding: 5px 12px; font-size: 12px; border: 1.5px solid var(--border);
+  border-radius: 6px; background: transparent; color: var(--text-muted);
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+  transition: background .15s, border-color .15s; flex-shrink: 0;
+}
+.theme-btn:hover { background: var(--btn-bg); border-color: var(--btn-hover); }
+.input-row {
+  display: flex; gap: 8px; align-items: center; margin-bottom: 8px;
+}
+.input-group { display: flex; align-items: center; gap: 4px; flex: 1; }
+.input-group label { font-size: 14px; color: var(--blue); font-weight: 600; white-space: nowrap; }
+.input-group input {
+  flex: 1; padding: 8px 10px; font-size: 14px; font-family: inherit;
+  border: 1.5px solid var(--border); border-radius: 6px; outline: none;
+  transition: border-color .15s; background: var(--card-bg); color: var(--text-body);
+}
+.input-group input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+.btn-clear {
+  padding: 8px 18px; font-size: 13px; border: none; border-radius: 6px;
+  background: var(--btn-bg); color: var(--btn-text); cursor: pointer; font-family: inherit;
+  transition: background .15s;
+}
+.btn-clear:hover { background: var(--btn-hover); }
+.btn-import {
+  padding: 8px 16px; font-size: 13px; border: none; border-radius: 6px;
+  background: var(--blue); color: #fff; cursor: pointer; font-family: inherit;
+  transition: background .15s; white-space: nowrap;
+}
+.btn-import:hover { background: var(--blue-hover); }
+.hint {
+  font-size: 12px; color: var(--text-muted); margin-bottom: 12px;
+}
+.batch-row {
+  display: flex; gap: 8px; align-items: stretch; margin-bottom: 12px;
+}
+.batch-row textarea {
+  flex: 1; resize: vertical; min-height: 100px; max-height: 200px;
+  padding: 8px 10px; font-size: 13px; font-family: inherit;
+  border: 1.5px solid var(--border); border-radius: 6px; outline: none;
+  line-height: 1.6; transition: border-color .15s;
+  background: var(--card-bg); color: var(--text-body);
+}
+.batch-row textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+.batch-row textarea::placeholder { color: var(--text-placeholder); }
+.batch-right { display: flex; flex-direction: column; justify-content: flex-end; }
+.import-msg { font-size: 12px; color: var(--text-muted); min-height: 1.2em; margin-top: 4px; }
+.table-wrap {
+  border: 1px solid var(--table-border); border-radius: 6px; overflow: hidden; margin-bottom: 14px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead { background: var(--thead-bg); }
+th { padding: 8px 12px; text-align: left; font-weight: 600; color: var(--th-text); }
+td { padding: 7px 12px; border-top: 1px solid var(--row-border); color: var(--text-body); }
+tbody tr:hover { background: var(--row-hover); }
+.empty-row td { color: var(--text-dim); text-align: center; padding: 20px 0; font-size: 13px; }
+.result-area {
+  background: var(--result-bg); border-radius: 8px; padding: 14px 18px;
+  display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px;
+  min-height: 52px; align-items: center;
+}
+.result-item { display: flex; align-items: center; gap: 4px; }
+.result-label { color: var(--label); font-weight: 500; }
+.result-value { color: var(--blue-value); font-weight: 700; font-variant-numeric: tabular-nums; }
+.result-empty { color: var(--text-dim); font-size: 13px; }
+.formula { text-align: center; font-size: 15px; color: var(--text-primary); margin-bottom: 14px; }
+.formula em { font-style: italic; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <h1>最小二乘法线性回归</h1>
+    <button class="theme-btn" id="themeBtn">&#x1F5A5; 跟随系统</button>
+  </div>
+
+  <div class="input-row">
+    <div class="input-group">
+      <label>X&#x2096;</label>
+      <input type="text" id="inputX" placeholder="输入 x" autofocus spellcheck="false">
+    </div>
+    <div class="input-group">
+      <label>Y&#x2096;</label>
+      <input type="text" id="inputY" placeholder="输入 y" spellcheck="false">
+    </div>
+    <button class="btn-clear" id="btnClear">清空</button>
+  </div>
+  <div class="hint">输入 X 后按 Enter 跳到 Y，在 Y 按 Enter 添加数据点</div>
+
+  <div class="batch-row">
+    <textarea id="batchInput" placeholder="或在此批量粘贴数据，每行一组 x, y（逗号或空格分隔）&#10;&#10;x1, y1&#10;x2, y2&#10;x3, y3&#10;..."></textarea>
+    <div class="batch-right">
+      <button class="btn-import" id="btnImport">导入</button>
+      <div class="import-msg" id="importMsg"></div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:44px">#</th><th>X</th><th>Y</th></tr></thead>
+      <tbody id="dataBody">
+        <tr class="empty-row"><td colspan="3">暂无数据，请在上方输入</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="formula"><em>y</em> = <em>k</em><em>x</em> + <em>b</em></div>
+
+  <div class="result-area" id="resultArea">
+    <span class="result-empty">输入至少 2 个数据点开始计算</span>
+  </div>
+</div>
+
+<script>
+// --- 主题切换 ---
+(function() {
+  var saved = localStorage.getItem('theme-preference') || 'auto';
+  var root = document.documentElement;
+
+  function apply(state) {
+    var btn = document.getElementById('themeBtn');
+    if (state === 'auto') {
+      root.removeAttribute('data-theme');
+      btn.textContent = '\uD83D\uDDA5 跟随系统';
+    } else if (state === 'light') {
+      root.setAttribute('data-theme', 'light');
+      btn.textContent = '\u2600 浅色';
+    } else {
+      root.setAttribute('data-theme', 'dark');
+      btn.textContent = '\u263E 深色';
+    }
+  }
+
+  apply(saved);
+
+  document.getElementById('themeBtn').addEventListener('click', function() {
+    var cur = localStorage.getItem('theme-preference') || 'auto';
+    var next = cur === 'auto' ? 'light' : cur === 'light' ? 'dark' : 'auto';
+    if (next === 'auto') {
+      localStorage.removeItem('theme-preference');
+    } else {
+      localStorage.setItem('theme-preference', next);
+    }
+    apply(next);
+  });
+})();
+
+var data = [];
+
+var inputX = document.getElementById('inputX');
+var inputY = document.getElementById('inputY');
+var btnClear = document.getElementById('btnClear');
+var dataBody = document.getElementById('dataBody');
+var resultArea = document.getElementById('resultArea');
+
+function addPoint() {
+  var xv = parseFloat(inputX.value);
+  var yv = parseFloat(inputY.value);
+  if (isNaN(xv) || isNaN(yv)) return;
+  data.push({ x: xv, y: yv });
+  inputX.value = '';
+  inputY.value = '';
+  inputX.focus();
+  refresh();
+}
+
+inputX.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    var xv = parseFloat(inputX.value);
+    if (!isNaN(xv)) inputY.focus();
+  }
+});
+
+inputY.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addPoint();
+  }
+});
+
+btnClear.addEventListener('click', function() {
+  data.length = 0;
+  inputX.value = '';
+  inputY.value = '';
+  inputX.focus();
+  refresh();
+});
+
+var batchInput = document.getElementById('batchInput');
+var btnImport = document.getElementById('btnImport');
+var importMsg = document.getElementById('importMsg');
+
+btnImport.addEventListener('click', function() {
+  var text = batchInput.value;
+  if (!text.trim()) { importMsg.textContent = '请输入数据'; return; }
+
+  var lines = text.split('\n');
+  var added = 0, errors = 0;
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (!line) continue;
+    if (line.toLowerCase() === 'quit') continue;
+
+    var parts = line.split(/[,，、\s]+/);
+    if (parts.length < 2) { errors++; continue; }
+
+    var x = parseFloat(parts[0]);
+    var y = parseFloat(parts[1]);
+    if (isNaN(x) || isNaN(y)) { errors++; continue; }
+
+    data.push({ x: x, y: y });
+    added++;
+  }
+
+  if (added > 0) {
+    importMsg.textContent = '成功导入 ' + added + ' 个数据点' + (errors > 0 ? '，' + errors + ' 行解析失败' : '');
+    refresh();
+  } else {
+    importMsg.textContent = errors > 0 ? '解析失败，请检查格式' : '没有有效数据';
+  }
+});
+
+function refreshTable() {
+  if (data.length === 0) {
+    dataBody.innerHTML = '<tr class="empty-row"><td colspan="3">暂无数据，请在上方输入</td></tr>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < data.length; i++) {
+    html += '<tr><td>' + (i + 1) + '</td><td>' + data[i].x + '</td><td>' + data[i].y + '</td></tr>';
+  }
+  dataBody.innerHTML = html;
+}
+
+function calc() {
+  var n = data.length;
+  var sx = 0, sy = 0, sxx = 0, syy = 0, sxy = 0;
+  for (var i = 0; i < n; i++) {
+    var x = data[i].x, y = data[i].y;
+    sx += x; sy += y;
+    sxx += x * x; syy += y * y;
+    sxy += x * y;
+  }
+
+  var denomK = n * sxx - sx * sx;
+  var k = NaN, b = NaN, r = NaN, sy_err = 0, uk = 0;
+
+  if (n >= 2 && denomK !== 0) {
+    k = (n * sxy - sx * sy) / denomK;
+    b = (sy - k * sx) / n;
+
+    if (n >= 3) {
+      var rss = 0;
+      for (var i = 0; i < n; i++) {
+        var res = data[i].y - (k * data[i].x + b);
+        rss += res * res;
+      }
+      sy_err = Math.sqrt(rss / (n - 2));
+
+      var mx = sx / n;
+      var dx = n * (sxx / n - mx * mx);
+      uk = dx > 0 ? Math.sqrt(1 / dx) * sy_err : 0;
+    }
+
+    var denomR = (n * sxx - sx * sx) * (n * syy - sy * sy);
+    if (denomR > 0) {
+      r = (n * sxy - sx * sy) / Math.sqrt(denomR);
+    }
+  }
+
+  return { n: n, k: k, b: b, r: r, sy_err: sy_err, uk: uk };
+}
+
+function refresh() {
+  refreshTable();
+  var result = calc();
+
+  if (result.n < 2) {
+    resultArea.innerHTML = '<span class="result-empty">输入至少 2 个数据点开始计算</span>';
+    return;
+  }
+
+  function fmt(v) {
+    return (v == null || isNaN(v)) ? '--' : v.toFixed(4);
+  }
+
+  var parts = [];
+  parts.push('<span class="result-item"><span class="result-label">k =</span><span class="result-value">' + fmt(result.k) + '</span></span>');
+  parts.push('<span class="result-item"><span class="result-label">b =</span><span class="result-value">' + fmt(result.b) + '</span></span>');
+  parts.push('<span class="result-item"><span class="result-label">r =</span><span class="result-value">' + fmt(result.r) + '</span></span>');
+  parts.push('<span class="result-item"><span class="result-label">&sigma;<sub>y</sub> =</span><span class="result-value">' + fmt(result.sy_err) + '</span></span>');
+  parts.push('<span class="result-item"><span class="result-label">u<sub>k</sub> =</span><span class="result-value">' + fmt(result.uk) + '</span></span>');
+
+  if (result.n < 3) parts.push('<span style="font-size:12px;color:var(--text-dim);margin-left:8px">(n &lt; 3, &#x3c3;<sub>y</sub> &#x4e0e; u<sub>k</sub> &#x4e0d;&#x53ef;&#x8ba1;&#x7b97;)</span>');
+
+  resultArea.innerHTML = parts.join('');
+}
+</script>
+</body>
+</html>
