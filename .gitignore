@@ -2,6 +2,16 @@
 *.rar
 *.7z
 
+# Video files
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
+*.m4v
+
 .vscode/
 
 *.pyc

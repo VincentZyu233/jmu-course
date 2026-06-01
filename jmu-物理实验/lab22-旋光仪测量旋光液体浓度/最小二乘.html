@@ -29,32 +29,8 @@
   --table-border: #e8edf5;
   --result-bg: #f7f9fc;
 }
-[data-theme="light"] {
-  --bg: #f0f4f8;
-  --card-bg: #fff;
-  --card-shadow: rgba(37,99,235,.12);
-  --text-primary: #1e3a5f;
-  --text-body: #2d3748;
-  --text-muted: #8a9bb5;
-  --text-dim: #a0b4cc;
-  --text-placeholder: #b0bcca;
-  --label: #6b7f99;
-  --blue: #2563eb;
-  --blue-hover: #1d4ed8;
-  --blue-value: #2563eb;
-  --border: #d1d9e8;
-  --btn-bg: #e8edf5;
-  --btn-text: #4a5568;
-  --btn-hover: #d1d9e8;
-  --thead-bg: #f7f9fc;
-  --th-text: #4a5568;
-  --row-border: #eef2f7;
-  --row-hover: #f7f9fc;
-  --table-border: #e8edf5;
-  --result-bg: #f7f9fc;
-}
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --bg: #0f172a;
     --card-bg: #1e293b;
     --card-shadow: rgba(0,0,0,.3);
@@ -191,6 +167,80 @@ tbody tr:hover { background: var(--row-hover); }
 .result-empty { color: var(--text-dim); font-size: 13px; }
 .formula { text-align: center; font-size: 15px; color: var(--text-primary); margin-bottom: 14px; }
 .formula em { font-style: italic; }
+.footer-info {
+  margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--border);
+  text-align: center; font-size: 12px; color: var(--text-muted);
+  display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.footer-info a { color: var(--blue); text-decoration: none; }
+.footer-info a:hover { text-decoration: underline; }
+.footer-sep { color: var(--text-dim); }
+.footer-item { display: inline-flex; align-items: center; gap: 4px; }
+.footer-info .copy-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border: 1px solid var(--border);
+  border-radius: 4px; background: transparent; color: var(--text-muted);
+  cursor: pointer; font-size: 11px; font-family: inherit; padding: 0;
+  transition: background .15s, color .15s; line-height: 1;
+}
+.footer-info .copy-btn:hover { background: var(--btn-bg); color: var(--blue); }
+#qqLink { text-decoration: underline; text-decoration-style: dotted; }
+
+/* --- 添加按钮 --- */
+.btn-add {
+  padding: 8px 16px; font-size: 13px; border: none; border-radius: 6px;
+  background: var(--blue); color: #fff; cursor: pointer; font-family: inherit;
+  transition: background .15s; white-space: nowrap;
+}
+.btn-add:hover { background: var(--blue-hover); }
+
+/* --- 表格工具栏 --- */
+.table-toolbar {
+  display: flex; justify-content: space-between; margin-bottom: 6px;
+}
+.table-toolbar .btn-clear { font-size: 12px; padding: 5px 12px; }
+.btn-export {
+  font-size: 12px; padding: 5px 12px; border: 1.5px solid var(--border);
+  border-radius: 6px; background: transparent; color: var(--text-muted);
+  cursor: pointer; font-family: inherit;
+  transition: background .15s, color .15s;
+}
+.btn-export:hover { background: var(--btn-bg); color: var(--blue); }
+
+/* --- Toast 通知 --- */
+.toast-container {
+  position: fixed; top: 20px; right: 20px; z-index: 9999;
+  pointer-events: none;
+}
+.toast {
+  background: var(--card-bg); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 10px 18px;
+  box-shadow: 0 4px 20px var(--card-shadow);
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text-body);
+  transform: translateX(calc(100% + 40px));
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.35s ease;
+  pointer-events: none; white-space: nowrap;
+}
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+.toast-icon {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; flex-shrink: 0;
+}
+
+@media (max-width: 500px) {
+  .input-row { gap: 6px; }
+  .input-group { min-width: 0; flex: 1; }
+  .input-group label { font-size: 12px; }
+  .input-group input { padding: 6px 8px; min-width: 0; }
+  .btn-add { width: 54px; flex-shrink: 0; padding: 8px 0; text-align: center; }
+}
 </style>
 </head>
 <body>
@@ -209,7 +259,7 @@ tbody tr:hover { background: var(--row-hover); }
       <label>Y&#x2096;</label>
       <input type="text" id="inputY" placeholder="输入 y" spellcheck="false">
     </div>
-    <button class="btn-clear" id="btnClear">清空</button>
+    <button class="btn-add" id="btnAdd">添加</button>
   </div>
   <div class="hint">输入 X 后按 Enter 跳到 Y，在 Y 按 Enter 添加数据点</div>
 
@@ -221,6 +271,10 @@ tbody tr:hover { background: var(--row-hover); }
     </div>
   </div>
 
+  <div class="table-toolbar">
+    <button class="btn-export" id="btnExport">导出数据</button>
+    <button class="btn-clear" id="btnClear">清空全部</button>
+  </div>
   <div class="table-wrap">
     <table>
       <thead><tr><th style="width:44px">#</th><th>X</th><th>Y</th></tr></thead>
@@ -235,6 +289,24 @@ tbody tr:hover { background: var(--row-hover); }
   <div class="result-area" id="resultArea">
     <span class="result-empty">输入至少 2 个数据点开始计算</span>
   </div>
+  <div class="footer-info">
+    <span class="footer-item">
+      <a href="https://github.com/VincentZyu233" target="_blank">GitHub: VincentZyu233</a>
+      <button class="copy-btn" data-copy="https://github.com/VincentZyu233" title="复制 GitHub 链接">复制</button>
+    </span>
+    <span class="footer-sep">|</span>
+    <span class="footer-item">
+      <span id="qqLink" style="cursor:pointer">QQ: 1830540513</span>
+      <button class="copy-btn" data-copy="1830540513" title="复制 QQ 号">复制</button>
+    </span>
+  </div>
+</div>
+
+<div class="toast-container">
+  <div class="toast" id="toast">
+    <span class="toast-icon">✓</span>
+    <span id="toastMsg"></span>
+  </div>
 </div>
 
 <script>
@@ -247,13 +319,13 @@ tbody tr:hover { background: var(--row-hover); }
     var btn = document.getElementById('themeBtn');
     if (state === 'auto') {
       root.removeAttribute('data-theme');
-      btn.textContent = '\uD83D\uDDA5 跟随系统';
+      btn.textContent = '\uD83D\uDDA5\uFE0F 跟随系统';
     } else if (state === 'light') {
       root.setAttribute('data-theme', 'light');
-      btn.textContent = '\u2600 浅色';
+      btn.textContent = '\u2600\uFE0F 浅色';
     } else {
       root.setAttribute('data-theme', 'dark');
-      btn.textContent = '\u263E 深色';
+      btn.textContent = '\uD83C\uDF19 深色';
     }
   }
 
@@ -275,15 +347,28 @@ var data = [];
 
 var inputX = document.getElementById('inputX');
 var inputY = document.getElementById('inputY');
+var btnAdd = document.getElementById('btnAdd');
 var btnClear = document.getElementById('btnClear');
 var dataBody = document.getElementById('dataBody');
 var resultArea = document.getElementById('resultArea');
+
+function showToast(msg) {
+  var el = document.getElementById('toast');
+  var msgEl = document.getElementById('toastMsg');
+  msgEl.textContent = msg;
+  el.className = 'toast show';
+  clearTimeout(el._timer);
+  el._timer = setTimeout(function() {
+    el.className = 'toast';
+  }, 2200);
+}
 
 function addPoint() {
   var xv = parseFloat(inputX.value);
   var yv = parseFloat(inputY.value);
   if (isNaN(xv) || isNaN(yv)) return;
   data.push({ x: xv, y: yv });
+  showToast('新增数据，x = ' + xv + ', y = ' + yv);
   inputX.value = '';
   inputY.value = '';
   inputX.focus();
@@ -305,12 +390,41 @@ inputY.addEventListener('keydown', function(e) {
   }
 });
 
+btnAdd.addEventListener('click', addPoint);
+
 btnClear.addEventListener('click', function() {
   data.length = 0;
   inputX.value = '';
   inputY.value = '';
   inputX.focus();
   refresh();
+});
+
+document.getElementById('btnExport').addEventListener('click', function() {
+  if (data.length === 0) { showToast('没有数据可导出'); return; }
+  var lines = [];
+  for (var i = 0; i < data.length; i++) {
+    lines.push(data[i].x + ', ' + data[i].y);
+  }
+  navigator.clipboard.writeText(lines.join('\n')).then(function() {
+    showToast('已导出 ' + data.length + ' 个数据点');
+  });
+});
+
+document.getElementById('qqLink').addEventListener('click', function() {
+  navigator.clipboard.writeText('1830540513').then(function() {
+    showToast('作者QQ号已复制到剪贴板');
+  });
+});
+
+document.querySelectorAll('.copy-btn').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var text = btn.getAttribute('data-copy');
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('已复制: ' + text);
+    });
+  });
 });
 
 var batchInput = document.getElementById('batchInput');
